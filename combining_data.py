@@ -8,9 +8,13 @@ genre_df = pd.concat([pd.read_csv(os.path.join(output_path, file)) for file in a
     
 movie_list = []
 for filename in os.listdir('data'):
+    if not filename.endswith('.json'):
+        print(f"Skipping non-JSON file: {filename}")
+        continue
     input_file = os.path.join('Data', filename)
         
     with open(input_file, 'r', encoding='Windows-1252') as file:
+        print("processing file", {input_file})
         movie_data = json.load(file)
         movie_list.append(pd.DataFrame(movie_data))
 movie_df = pd.concat(movie_list, ignore_index=True)
@@ -34,3 +38,4 @@ merged_df = merged_df.drop_duplicates(subset=['Title'], keep='first')
 print(merged_df.head(10))
 print(len(merged_df))
 
+merged_df.to_csv('output_file.csv', index=False)
