@@ -14,7 +14,6 @@ for filename in os.listdir('data'):
     input_file = os.path.join('Data', filename)
         
     with open(input_file, 'r', encoding='Windows-1252') as file:
-        print("processing file", {input_file})
         movie_data = json.load(file)
         movie_list.append(pd.DataFrame(movie_data))
 movie_df = pd.concat(movie_list, ignore_index=True)
