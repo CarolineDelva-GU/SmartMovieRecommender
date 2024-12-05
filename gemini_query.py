@@ -68,13 +68,10 @@ def process_movies():
         
         with open(input_file, 'r', encoding='Windows-1252') as file:
             movie_data = json.load(file)
-            # movies = movie_data.get("Title", [])
 
-            for index, movie in enumerate(movie_data):
-                if index >= 1:
-                    break
-                title = movie.get("Title")
-                prompt = f"""
+            movie = movie_data[62]
+            title = movie.get("Title")
+            prompt = f"""
                 You are an expert in rating films. Can you please give me a score of how much
                 each film from this list: "{title}" fits into each of these categories. Please score from 0-1, where 0 is the 
                 film does not fit the category at all and 1 is that the film perfectly fits the category 
@@ -116,16 +113,16 @@ def process_movies():
                 """
 
         # Get the response from Gemini API
-                response = chat_with_gemini(prompt)
-                time.sleep(1)
-                if response:
-                    parsed_data = parse_response(response)
-                    if parsed_data:
-                        all_movies.append(parsed_data)
-                    else:
-                        print(f"Failed to parse response")
+            response = chat_with_gemini(prompt)
+            time.sleep(1)
+            if response:
+                parsed_data = parse_response(response)
+                if parsed_data:
+                    all_movies.append(parsed_data)
                 else:
-                    print("No reponse from API")
+                    print(f"Failed to parse response")
+            else:
+                print("No reponse from API")
 
     return all_movies
 
@@ -151,7 +148,7 @@ if cleaned_movies:
     # Fill NaN values with 0
     df.fillna(0, inplace=True)
 
-    output_path = "cleaned_movies.csv"
+    output_path = "output_data/cleaned_movies62.csv"
     df.to_csv(output_path, index=False, encoding='utf-8')
     print(f"Data saved to {output_path}")
 else:
