@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from numpy.linalg import norm
+import argparse
 
 # MAKING ALL VARIABLES NUMERIC
 def convert_duration(duration):
@@ -82,9 +83,14 @@ movies = movies.fillna(0)
 movie_titles = movies['Title']
 movies = movies.drop(columns=['Title']).apply(lambda x: (x - x.min()) / (x.max() - x.min()))
 movies['Title'] = movie_titles
-
-# Example usage of cosine_max function
-print(movies.iloc[8])
-movie_index = 8  # Define the movie index you want to compare
-print(cosine_max(movie_index))
     
+# Getting movie title from user
+parser = argparse.ArgumentParser(description="Movie Title Input")
+parser.add_argument("-t", required=True, help="Title of Movie")
+args = parser.parse_args()
+
+# finding the index of the title
+index = movies[movies['Title'].str.contains(args.t, case=False, na=False)].index[0]
+print(movies.iloc[index])
+movie_index = index # Define the movie index you want to compare
+print(cosine_max(movie_index))
