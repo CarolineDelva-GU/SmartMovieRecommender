@@ -22,3 +22,6 @@ dependencies:
   - scikit-learn
   - pandas
   - matplotlib
+  - chardet
+  - pip:
+    - google-generativeai
