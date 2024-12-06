@@ -1,12 +1,10 @@
 
+# Smart Movie Recommender
 
-# Final Project Smart Movie Recommender 
 
 ## Overview
 
-# Smart Movie Recommender
-
-In this project, the Smart Movie Recommender Project is a Python package that can provide recommended movies. 
+In this project, the Smart Movie Recommender is a Python package that is able to take in a query and return the top 5 recommended movies. 
 
 ## Project Structure
 
@@ -19,7 +17,7 @@ In this project, the Smart Movie Recommender Project is a Python package that ca
 
 - **smartmovierecommender.py**: The code can be executed using this file by running: 
   ```bash
-   # python -m matcher.bin.main -f data/annotated-index.tsv -r data/results.tsv -s exact_match -e
+
 
   ```
 ### Install Dependencies 
