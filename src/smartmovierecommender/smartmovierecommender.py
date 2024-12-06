@@ -28,7 +28,7 @@ def main(link_for_scraping, to_scrape, to_gemini, to_cosine_score, movie):
         
     if to_cosine_score:   
             # Reading in CSV
-        movies = pd.read_csv("output_file.csv")
+        movies = pd.read_csv("../../processed-data/output_file.csv")
         # Converting duration to numeric
         movies['Duration'] = movies['Duration'].astype(str)
         movies['Duration'] = movies['Duration'].apply(convert_duration)
@@ -70,23 +70,14 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--to_scrape", action="store_true", help="Flag to scrape or not")
     parser.add_argument("-g", "--to_gemini", action="store_true", help="Flag to gemini score")
     parser.add_argument("-cs", "--to_cosine_score", action="store_true", help="Flag to gemini score")
-    parser.add_argument("-t", required=True, help="Title of Movie")
+    parser.add_argument("-t", "--title", required=True, help="Title of Movie")
     
     args = parser.parse_args()
+   
     
-    main(args.file, args.result, args.scorer, args.evaluate)
+    main(args.link, args.to_scrape, args.to_gemini, args.cosine_score, args.title)
     logging.info('Scoring is completed')  
     logging.shutdown()  
-    
-    parser = argparse.ArgumentParser(description="Movie Title Input")
-    parser.add_argument("-t", required=True, help="Title of Movie")
-    args = parser.parse_args()
-
-    # # finding the index of the title
-    # index = movies[movies['Title'].str.contains(args.t, case=False, na=False)].index[0]
-    # logging.info(movies.iloc[index])
-    # movie_index = index # Define the movie index you want to compare
-    # logging.info(cosine_max(movie_index))
     
 
 
