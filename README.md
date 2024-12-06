@@ -1,35 +1,38 @@
-# smartmovierecommender
 
-recommends movies to users
 
-## Installation
+# Final Project Smart Movie Recommender 
+
+## Overview
+
+# Smart Movie Recommender
+
+In this project, the Smart Movie Recommender Project is a Python package that can provide recommended movies. 
+
+## Project Structure
+
+- **smartmovierecommender**: 
+- **datascrapper**
+- **gemini_query** 
+- **cosine_sim** 
+- **utils**: 
+- **tests**
+
+- **smartmovierecommender.py**: The code can be executed using this file by running: 
+  ```bash
+   # python -m matcher.bin.main -f data/annotated-index.tsv -r data/results.tsv -s exact_match -e
+
+  ```
+### Install Dependencies 
 
 ```bash
-pip install smartmovierecommender
+cd smartmovierecommender
+pip install -r requirements.txt
 ```
 
-## Usage
 
-- TODO
 
-## Contributing
 
-Clone and set up the repository with
 
-```bash
-git clone TODO && cd smartmovierecommender
-pip install -e ".[dev]"
-```
 
-Install pre-commit hooks with
 
-```bash
-pre-commit install
-```
-
-Run tests using
-
-```
-pytest -v tests
-```
 
