@@ -52,7 +52,7 @@ def convert_to_title(sims):
     return titles
     
 # Reading in CSV
-movies = pd.read_csv("output_file.csv")
+movies = pd.read_csv("output_file1.csv")
 # Converting duration to numeric
 movies['Duration'] = movies['Duration'].astype(str)
 movies['Duration'] = movies['Duration'].apply(convert_duration)
@@ -75,14 +75,20 @@ movies['Number of Ratings'] = movies['Number of Ratings'].apply(convert_ratings)
 # dropping variables:
 columns_to_drop = ['Description', 'Descrption', 'Genre', 'Runtime', 'Director', 'Writer', 'Actors', 'Rating', 'Awards', 'Description']
 movies = movies.drop(columns=columns_to_drop)
+cols_to_drop = ['dark_comedy', 'historical_drama', 'romantic_comedy', 'science_fiction']
+movies = movies.drop(columns=cols_to_drop)
 
 # filling the missing with zeros
 movies = movies.fillna(0)
 
 # normalizing all the variables to 0-1
-movie_titles = movies['Title']
-movies = movies.drop(columns=['Title']).apply(lambda x: (x - x.min()) / (x.max() - x.min()))
-movies['Title'] = movie_titles
+movies['Year'] = (movies['Year'] - movies['Year'].min()) / (movies['Year'].max() - movies['Year'].min())
+movies['Duration'] = (movies['Duration'] - movies['Duration'].min()) / (movies['Duration'].max() - movies['Duration'].min())
+movies['Rated'] = (movies['Rated'] - movies['Rated'].min()) / (movies['Rated'].max() - movies['Rated'].min())
+movies['IMDB Rating'] = (movies['IMDB Rating'] - movies['IMDB Rating'].min()) / (movies['IMDB Rating'].max() - movies['IMDB Rating'].min())
+movies['Number of Ratings'] = (movies['Number of Ratings'] - movies['Number of Ratings'].min()) / (movies['Number of Ratings'].max() - movies['Number of Ratings'].min())
+
+movies.to_csv("movies_final.csv")
     
 # Getting movie title from user
 parser = argparse.ArgumentParser(description="Movie Title Input")
