@@ -84,11 +84,11 @@ def preprocess_movies(filepath):
         return movies
 
 
-
+#this performs the cosine similarity and returns the top 5 recs 
 def get_movie_rec(movies,movie_title,top_n=5):
-     
+        #matches movie given to movie title in data set and finds movies 
         target_movie = movies[movies['Title'] == movie_title]
-
+        
         features = movies.drop(columns=['Title'])
         target_features = target_movie.drop(columns=['Title'])
 
@@ -96,9 +96,10 @@ def get_movie_rec(movies,movie_title,top_n=5):
         similarities = cosine_similarity(target_features, features)[0]
 
         # Get the top 5 similar movies
-        # Get top N recommendations
         movies['Similarity'] = similarities
         recommendations = movies[movies['Title'] != movie_title].sort_values(
                 by='Similarity', ascending=False).head(5)
         return recommendations[['Title', 'Similarity']]
+
+
 

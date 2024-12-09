@@ -19,8 +19,9 @@ from smartmovierecommender.calculation.cosine_sim import convert_duration, conve
    
 
 def main(movie_title):
+    #opens the function to get the dataset 
     movies = preprocess_movies("../processed-data/output_file.csv")
-
+    #does the cosine sim and gets the top 5 recs 
     recs = get_movie_rec(movies,movie_title)
     if recs.empty:
         print("No recommendations found.")
