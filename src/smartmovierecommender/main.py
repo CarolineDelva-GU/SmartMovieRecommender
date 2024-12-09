@@ -4,8 +4,10 @@ import argparse
 from sklearn.metrics.pairwise import cosine_similarity
 #from smartmovierecommender.transformer.gemini_query import process_movies
 #from smartmovierecommender.collector.datascraper import scraper 
-from smartmovierecommender.utils.combining_data import movie_combiner, get_movie_rec, preprocess_movies
-from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings, cosine_sim, cosine_max, convert_to_title
+import os
+print(os.getcwd())
+from utils.combining_data import movie_combiner, get_movie_rec, preprocess_movies
+from calculation.cosine_sim import convert_duration, convert_ratings, cosine_sim, cosine_max, convert_to_title
 #from smartmovierecommender.collector.datacollect import fetch_movie_details_imdb
 
 #I don't have permission so it wasn't working 
@@ -20,7 +22,9 @@ from smartmovierecommender.calculation.cosine_sim import convert_duration, conve
 
 def main(movie_title):
     #opens the function to get the dataset 
-    movies = preprocess_movies("../processed-data/output_file.csv")
+    print(os.getcwd())
+    # movies = preprocess_movies("../processed-data/output_file.csv")
+    movies = preprocess_movies("processed-data/output_file.csv")
     #does the cosine sim and gets the top 5 recs 
     recs = get_movie_rec(movies,movie_title)
     if recs.empty:

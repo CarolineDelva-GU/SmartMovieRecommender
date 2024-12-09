@@ -2,7 +2,9 @@ import pandas as pd
 import os
 import json
 import logging 
-from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings
+print('here')
+print(os.getcwd())
+from calculation.cosine_sim import convert_duration, convert_ratings
 from sklearn.metrics.pairwise import cosine_similarity
 
 def movie_combiner(output_path, output_file):
