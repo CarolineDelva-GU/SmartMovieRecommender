@@ -1,45 +1,51 @@
+
+from src.smartmovierecommender.main import main
 import gradio as gr
-from huggingface_hub import InferenceClient
-import os 
-import pandas as pd 
-from dotenv import load_dotenv
-from huggingface_hub import HfApi
-import json
-
-from src.smartmovierecommender.smartmovierecommender import main
-
-load_dotenv()
-
-API_KEY = os.getenv("api_key")
-
+import io
+import sys
 
 def respond(prompt):
-    if not prompt: 
-        return json.dumps({"error": "Please enter a prompt"})
-    
-    try:
-        cosine_model = main(prompt)
-    except Exception as e:
-        return json.dumps({"error": f"Error processing the query: {str(e)}"})
-    
-    if not cosine_model:
-        return json.dumps({"error": "No results found for the given query."})
-    
-    results = [{"file": filepath, "score": float(score)} for filepath, score in cosine_model.items()]
-    
-    return json.dumps({"results": results})
+    if not prompt:
+        return {"error": "This is not a valid movie title."}
+    app_stdout = sys.stdout
+    final_app_stdout = io.StringIO()
+    sys.stdout = final_app_stdout
 
+    try:
+        main(movie_title=prompt)
+        output = final_app_stdout.getvalue()  
+    except Exception as e:
+        return {"error": f"An error occurred: {str(e)}"}
+    finally:
+        sys.stdout = app_stdout 
+
+    if "No recommendations found." in output:
+        return {"error": f"No recommendations found for the movie: {prompt}"}
+    
+
+    recommendations = []
+    for line in output.split("\n"):
+        if line.startswith("Top Recommendations:") or not line.strip():
+            continue
+        try:
+            title, similarity = line.rsplit(" (Similarity: ", 1)
+            similarity = similarity.rstrip(")")
+            recommendations.append({"Title": title.strip(), "Similarity": float(similarity)})
+        except ValueError:
+            continue
+
+    if not recommendations:
+        return {"error": "NO VALID RECOMMENDATIONS"}
+    
+    return {"recommendations": recommendations}
 demo = gr.Interface(
     fn=respond,
-    inputs=gr.Textbox(label="Enter your query", placeholder="Type your query here..."),
-    outputs=gr.JSON(label="Results"),
+    inputs=gr.Textbox(label="Enter the movie title here...", placeholder="Type a movie title..."),
+    outputs=gr.JSON(label="Movie Recommendations"),
     title="Smart Movie Recommender",
-    description="This tool provides movie recommendation using cosine similarity calculations."
+    description="This app provides movie recommendations based on the input provided."
 )
 
 if __name__ == "__main__":
     demo.launch(share=True)
-
-
-
 
