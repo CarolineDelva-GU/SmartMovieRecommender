@@ -57,38 +57,61 @@ print(movies_list)
 #list of movies 
 movie_titles = movies_list
 
-#save to json file
-output_file = []
 
-for movie_title in movie_titles:
-        #ombd search 
+def fetch_movie_details(movie_titles, API_KEY):
+    """
+    Fetch movie details from the OMDB API.
+    """
+    movie_details = []
+
+    for movie_title in movie_titles:
         url = f"http://www.omdbapi.com/?t={movie_title}&apikey={API_KEY}"
-        # Send a request to the API
         response = requests.get(url)
-        #check if the request was successful
-        if response.status_code == 200: 
-        #parse the JSON data
+
+        if response.status_code == 200:
             movie_data = response.json()
-    
-    #check if the movie was found
+            if movie_data['Response'] == 'True':
+                movie_details.append({
+                    "Title": movie_data.get('Title', 'N/A'),
+                    "Year": movie_data.get('Year', 'N/A'),
+                    "Duration": movie_data.get('Runtime', 'N/A'),
+                    "Rated": movie_data.get('Rated', 'N/A'),
+                    "IMDB Rating": movie_data.get('imdbRating', 'N/A'),
+                    "Number of Ratings": movie_data.get('imdbVotes', 'N/A'),
+                    "Description": movie_data.get('Plot', 'N/A'),
+                })
+            else:
+                print(f"Movie not found: {movie_data['Error']}")
+        else:
+            print(f"Failed to fetch movie data for {movie_title}")
+
+    return movie_details
+
+
+def fetch_movie_details_imdb(movie_title):
+
+    #Fetch movie details from the OMDB API
+        url = f"http://www.omdbapi.com/?t={movie_title}&apikey={API_KEY}"
+        response = requests.get(url)
+        movie_data = response.json()
         if movie_data['Response'] == 'True':
-            output_file.append({
-        #display the movie details
-                "Title": movie_data.get('Title', 'N/A'),
-                "Year": movie_data.get('Year', 'N/A'),
-                #"Genre": movie_data.get('Genre', 'N/A'),
-                "Duration":movie_data.get('Runtime', 'N/A'),
-                "Rated":movie_data.get('Rated', 'N/A'),
-                "IMDB Rating":movie_data.get('imdbRating', 'N/A'),
-                "Number of Ratings": movie_data.get('imdbVotes', 'N/A'),
-                "Description":movie_data.get('Plot', 'N/A'),
-            })
+            {
+                    "Title": movie_data.get('Title', 'N/A'),
+                    "Year": movie_data.get('Year', 'N/A'),
+                    "Duration": movie_data.get('Runtime', 'N/A'),
+                    "Rated": movie_data.get('Rated', 'N/A'),
+                    "IMDB Rating": movie_data.get('imdbRating', 'N/A'),
+                    "Number of Ratings": movie_data.get('imdbVotes', 'N/A'),
+                    "Description": movie_data.get('Plot', 'N/A'),
+                }
         else:
             print(f"Movie not found: {movie_data['Error']}")
-else:
-        print("cant fetch movie data")
-print(f"{output_file}")
+            return None
+
+
+
+#movie_details = fetch_movie_details(movie_titles, API_KEY)
 
 # Convert to JSON and write to a file
-with open('movies_2010.json', 'w') as f:
-    json.dump(output_file, f, indent=4)
+# with open('movies_2010.json', 'w') as f:
+#     json.dump(movie_details, f, indent=4)

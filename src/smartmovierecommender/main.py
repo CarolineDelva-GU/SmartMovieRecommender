@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 #from smartmovierecommender.collector.datascraper import scraper 
 from smartmovierecommender.utils.combining_data import movie_combiner
 from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings, cosine_sim, cosine_max, convert_to_title
-
+from smartmovierecommender.collector.datacollect import fetch_movie_details_imdb
 
 
 # logging.basicConfig(
@@ -18,7 +18,7 @@ from smartmovierecommender.calculation.cosine_sim import convert_duration, conve
 
 #def main(#to_imdb,link_for_scraping, to_scrape, to_gemini, to_cosine_score, movie): 
 def main(to_cosine_score, movie_title): 
-    # if to_imdb:
+          
 
 
 
@@ -58,6 +58,18 @@ def main(to_cosine_score, movie_title):
 
         # filling the missing with zeros
         movies = movies.fillna(0)
+        # Add the new movie (if provided) and preprocess its features
+    #     if new_movie_features:
+    #         new_movie = pd.DataFrame([new_movie_features], columns=movies.columns)
+    
+    # # Apply the same transformations to the new movie
+    #         new_movie['Duration'] = new_movie['Duration'].astype(str).apply(convert_duration)
+    #         new_movie['Rated'] = new_movie['Rated'].map(rating_mapping)
+    #         new_movie['Number of Ratings'] = new_movie['Number of Ratings'].astype(str).fillna('0').apply(convert_ratings)
+    # # Fill missing values
+    #         new_movie = new_movie.fillna(0)
+    # # Add the new movie to the dataset
+    #         movies = pd.concat([movies, new_movie], ignore_index=True)
 
         # normalizing all the variables to 0-1
         movie_titles = movies['Title']
@@ -67,9 +79,7 @@ def main(to_cosine_score, movie_title):
             
             # Find the movie in the dataset
         target_movie = movies[movies['Title'] == movie_title]
-        if target_movie.empty:
-                print(f"Movie '{movie_title}' not found in the dataset.")
-                return
+
 
         features = movies.drop(columns=['Title'])
         target_features = target_movie.drop(columns=['Title'])
@@ -106,6 +116,7 @@ if __name__ == "__main__":
         #to_gemini=args.to_gemini,
         to_cosine_score=args.to_cosine_score,
         movie_title=args.t
+        #new_movie_features=new_movie
     )
     
     #main(args.file, args.result, args.scorer, args.evaluate)
