@@ -4,11 +4,11 @@ import argparse
 from sklearn.metrics.pairwise import cosine_similarity
 #from smartmovierecommender.transformer.gemini_query import process_movies
 #from smartmovierecommender.collector.datascraper import scraper 
-from smartmovierecommender.utils.combining_data import movie_combiner
+from smartmovierecommender.utils.combining_data import movie_combiner, get_movie_rec, preprocess_movies
 from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings, cosine_sim, cosine_max, convert_to_title
-from smartmovierecommender.collector.datacollect import fetch_movie_details_imdb
+#from smartmovierecommender.collector.datacollect import fetch_movie_details_imdb
 
-
+#I don't have permission so it wasn't working 
 # logging.basicConfig(
 #     level=logging.INFO,
 #     filename='../../../../logs.txt',
@@ -16,90 +16,20 @@ from smartmovierecommender.collector.datacollect import fetch_movie_details_imdb
 #     format='%(asctime)s - %(levelname)s - %(message)s'
 # )
 
-#def main(#to_imdb,link_for_scraping, to_scrape, to_gemini, to_cosine_score, movie): 
-def main(to_cosine_score, movie_title): 
-          
-
-
-
-    # if to_scrape:
-    #     scraper(link_for_scraping)
-    
-    # movie_combiner("../../output_data/", "../../processed-data/output_file.csv")
-    
-    # if to_gemini:
-    #     process_movies()
-        
-    if to_cosine_score:   
-            # Reading in CSV
-        movies = pd.read_csv("../processed-data/output_file.csv")
-        # Converting duration to numeric
-        movies['Duration'] = movies['Duration'].astype(str)
-        movies['Duration'] = movies['Duration'].apply(convert_duration)
-
-        # converting MPAA rating to numeric
-        rating_mapping = {
-            'nan': 0,
-            'G': 1,
-            'PG': 2,
-            'PG-13': 3,
-            'R': 4,
-            'NC-17': 5,
-            'Unrated': 6
-        }
-        movies['Rated'] = movies['Rated'].map(rating_mapping)
-            
-        movies['Number of Ratings'] = movies['Number of Ratings'].astype(str).fillna('0')
-        movies['Number of Ratings'] = movies['Number of Ratings'].apply(convert_ratings)
-
-        # dropping variables:
-        columns_to_drop = ['Description', 'Descrption', 'Genre', 'Runtime', 'Director', 'Writer', 'Actors', 'Rating', 'Awards', 'Description']
-        movies = movies.drop(columns=columns_to_drop)
-
-        # filling the missing with zeros
-        movies = movies.fillna(0)
-        # Add the new movie (if provided) and preprocess its features
-    #     if new_movie_features:
-    #         new_movie = pd.DataFrame([new_movie_features], columns=movies.columns)
-    
-    # # Apply the same transformations to the new movie
-    #         new_movie['Duration'] = new_movie['Duration'].astype(str).apply(convert_duration)
-    #         new_movie['Rated'] = new_movie['Rated'].map(rating_mapping)
-    #         new_movie['Number of Ratings'] = new_movie['Number of Ratings'].astype(str).fillna('0').apply(convert_ratings)
-    # # Fill missing values
-    #         new_movie = new_movie.fillna(0)
-    # # Add the new movie to the dataset
-    #         movies = pd.concat([movies, new_movie], ignore_index=True)
-
-        # normalizing all the variables to 0-1
-        movie_titles = movies['Title']
-        movies = movies.drop(columns=['Title']).apply(lambda x: (x - x.min()) / (x.max() - x.min()))
-        movies['Title'] = movie_titles
-        print("Data preprocessing completed.")
-            
-            # Find the movie in the dataset
-        target_movie = movies[movies['Title'] == movie_title]
-
-
-        features = movies.drop(columns=['Title'])
-        target_features = target_movie.drop(columns=['Title'])
-
-            # Compute cosine similarities
-        similarities = cosine_similarity(target_features, features)[0]
-
-            # Get the top 5 similar movies
-        movies['Similarity'] = similarities
-        recommendations = movies[movies['Title'] != movie_title].sort_values(
-                by='Similarity', ascending=False).head(5)
-
-            # Print recommendations
-        print("\nTop 5 Recommendations:")
-        for i, row in recommendations.iterrows():
-                print(f"{row['Title']}")
-
-        # Getting movie title from user
    
-            
+
+def main(movie_title):
+    movies = preprocess_movies("../processed-data/output_file.csv")
+
+    recs = get_movie_rec(movies,movie_title)
+    if recs.empty:
+        print("No recommendations found.")
+    else:
+        print("\nTop Recommendations:")
+        for i, row in recs.iterrows():
+            print(f"{row['Title']} (Similarity: {row['Similarity']:.2f})")
+
+
  
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Movie_recommender_script")
@@ -114,7 +44,6 @@ if __name__ == "__main__":
         #link_for_scraping=args.link,
         #to_scrape=args.to_scrape,
         #to_gemini=args.to_gemini,
-        to_cosine_score=args.to_cosine_score,
         movie_title=args.t
         #new_movie_features=new_movie
     )
