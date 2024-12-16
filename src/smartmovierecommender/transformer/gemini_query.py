@@ -9,12 +9,6 @@ import chardet
 from dotenv import load_dotenv
 import os
 
-
-
-# Load API key
-# with open('/Users/lizziehealy/.api-keys.json') as f:
-#     keys = json.load(f)
-
 load_dotenv()
 
 API_KEY_GEMINI = os.environ.get("gemapi")
