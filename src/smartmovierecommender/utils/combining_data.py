@@ -4,8 +4,9 @@ import json
 import logging 
 print('here')
 print(os.getcwd())
-from calculation.cosine_sim import convert_duration, convert_ratings
+from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings
 from sklearn.metrics.pairwise import cosine_similarity
+from rapidfuzz import process, fuzz
 
 def movie_combiner(output_path, output_file):
 
@@ -86,21 +87,45 @@ def preprocess_movies(filepath):
         return movies
 
 
-#this performs the cosine similarity and returns the top 5 recs 
+# this performs the cosine similarity and returns the top 5 recs 
 def get_movie_rec(movies,movie_title,top_n=5):
-        #matches movie given to movie title in data set and finds movies 
-        target_movie = movies[movies['Title'] == movie_title]
-        
+        # lower titles to make it easier to search 
+        movie_title = movie_title.lower().strip()
+        movie_titles = [title.lower().strip() for title in movies['Title'].tolist()]
+        # case one = exact match, lower cases 
+        if movie_title in movie_titles:
+             matched_movie = movies['Title'][movie_titles.index(movie_title)]
+             score = 100 # we want only exact match 
+             print(f"Matched '{movie_title}' to '{matched_movie}' with a confidence of {score}%.")
+        else:
+             # case two = string matching 
+            substring_match  = [
+                 title for title in movie_titles if movie_title in title
+            ]
+            if substring_match:
+                 matched_movie = movies['Title'][movie_titles.index(substring_match[0])]
+                 score = 90 # confidence threshold
+                 print(f"Matched '{movie_title}' to '{matched_movie}' with a confidence of {score}%.")
+            else:
+                # case three = fuzzy name matching 
+                result = process.extractOne(movie_title, movie_titles, scorer=fuzz.partial_ratio)
+            # Unpack the result tuple
+                matched_movie, score, index = result
+                if score < 80:  # confidence threshold
+                    print(f"Could not confidently match '{movie_title}' to a movie in the dataset.")
+                    return []
+                matched_movie = movies['Title'][index]
+                print(f"Matched '{movie_title}' to '{matched_movie}' with a confidence of {score}%.")
+# matches movie given to movie title in data set and finds movies 
+        target_movie = movies[movies['Title'] == matched_movie]
         features = movies.drop(columns=['Title'])
         target_features = target_movie.drop(columns=['Title'])
-
-            # Compute cosine similarities
+# compute cosine similarities
         similarities = cosine_similarity(target_features, features)[0]
-
-        # Get the top 5 similar movies
+# top 5 similar movies
         movies['Similarity'] = similarities
-        recommendations = movies[movies['Title'] != movie_title].sort_values(
-                by='Similarity', ascending=False).head(5)
+        recommendations = movies[movies['Title'] != matched_movie].sort_values(
+            by='Similarity', ascending=False).head(top_n)
         return recommendations[['Title', 'Similarity']]
 
 
