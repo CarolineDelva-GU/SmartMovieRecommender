@@ -10,7 +10,6 @@ from rapidfuzz import process, fuzz
 
 def movie_combiner(output_path, output_file):
 
-    #output_path = "../../../output_data/"
     output_path = output_path
     all_files = [f for f in os.listdir(output_path) if f.endswith('.csv')]
     genre_df = pd.concat([pd.read_csv(os.path.join(output_path, file)) for file in all_files], ignore_index=True)
@@ -47,9 +46,6 @@ def movie_combiner(output_path, output_file):
     logging.info(len(merged_df))
     merged_df.to_csv(output_file, index=False)
     
-    
-
-    #merged_df.to_csv('output_file.csv', index=False)
 
 #this cleans the columns to normalize it to do the cosine similaritiy 
 def preprocess_movies(filepath):
@@ -116,13 +112,13 @@ def get_movie_rec(movies,movie_title,top_n=5):
                     return []
                 matched_movie = movies['Title'][index]
                 print(f"Matched '{movie_title}' to '{matched_movie}' with a confidence of {score}%.")
-# matches movie given to movie title in data set and finds movies 
+        # matches movie given to movie title in data set and finds movies 
         target_movie = movies[movies['Title'] == matched_movie]
         features = movies.drop(columns=['Title'])
         target_features = target_movie.drop(columns=['Title'])
-# compute cosine similarities
+        # compute cosine similarities
         similarities = cosine_similarity(target_features, features)[0]
-# top 5 similar movies
+        # top 5 similar movies
         movies['Similarity'] = similarities
         recommendations = movies[movies['Title'] != matched_movie].sort_values(
             by='Similarity', ascending=False).head(top_n)
