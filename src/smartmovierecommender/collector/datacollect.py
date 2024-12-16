@@ -1,5 +1,3 @@
-
-
 #open api 
 #import API key 
 import requests
@@ -108,11 +106,3 @@ def fetch_movie_details_imdb(movie_title):
         else:
             print(f"Movie not found: {movie_data['Error']}")
             return None
-
-
-
-#movie_details = fetch_movie_details(movie_titles, API_KEY)
-
-# Convert to JSON and write to a file
-# with open('movies_2010.json', 'w') as f:
-#     json.dump(movie_details, f, indent=4)
