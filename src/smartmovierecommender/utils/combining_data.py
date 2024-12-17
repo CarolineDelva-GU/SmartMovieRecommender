@@ -127,7 +127,7 @@ def get_movie_rec(movies,movie_title,top_n=5):
         return recommendations[['Title', 'Similarity']]
 
 # this function accesses all the data that is stored in a google link 
-def load_and_save_csv(save_dir="data/processed-data"):
+def load_and_save_csv(save_dir="../data/processed-data/"):
     # this is the link to the csv file 
     file_links = [
         "https://drive.google.com/uc?id=1pNL2i9e2itaGtBIhMRnwbsqdhBVXax4c&export=download",
