@@ -1,6 +1,8 @@
 
 # Smart Movie Recommender
 
+# Authors: Caroline Delva, Lizzie Healy, Rachna Rawalpally 
+
 
 ## Overview
 
@@ -25,7 +27,7 @@
 
 - **app.py**: hosts a gradio app to allow user to interact with `smartmovierecommender` package.
 
-
+![](program-tree.png)
 ### Install Dependencies 
 
 ```bash
