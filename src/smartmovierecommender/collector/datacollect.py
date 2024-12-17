@@ -6,14 +6,16 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-
 with open('/Users/rachnarawalpally/dsan5400-project/api_key.json') as f:
     keys = json.load(f)
 API_KEY = keys['OMDb API']
 
-
-#get top movies from wikipedia for the dataset 
 def get_movie_titles_from_wikipedia(url):
+    """
+    Gets the top movies from wikipedia for the dataset
+    Args: the URL
+    Returns: the movie titles from Wikipedia
+    """
     #fetch the web page content
     response = requests.get(url)
     
@@ -52,14 +54,14 @@ movies = get_movie_titles_from_wikipedia(url)
 movies_list = [movie_2010 for movie_2010 in movies[:10] if not movie_2010.isdigit()]
 print(movies_list)
 
-
 #list of movies 
 movie_titles = movies_list
 
-
 def fetch_movie_details(movie_titles, API_KEY):
     """
-    Fetch movie details from the OMDB API.
+    Fetches movie details from the OMDB API.
+    Args: the titles of the movies and the API Key
+    Returns: the title, year, duration, MPAA rating, IMDb rating, number of rating, and description for each movie
     """
     movie_details = []
 
@@ -88,6 +90,11 @@ def fetch_movie_details(movie_titles, API_KEY):
 
 
 def fetch_movie_details_imdb(movie_title):
+        """
+        Fetches movie details from the IMDb.
+        Args: the titles of the movies
+        Returns: the title, year, duration, MPAA rating, IMDb rating, number of rating, and description for each movie
+        """
 
     #Fetch movie details from the OMDB API
         url = f"http://www.omdbapi.com/?t={movie_title}&apikey={API_KEY}"
