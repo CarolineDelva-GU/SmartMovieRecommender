@@ -7,6 +7,8 @@ print(os.getcwd())
 from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings
 from sklearn.metrics.pairwise import cosine_similarity
 from rapidfuzz import process, fuzz
+import requests
+from io import StringIO
 
 def movie_combiner(output_path, output_file):
 
@@ -124,5 +126,22 @@ def get_movie_rec(movies,movie_title,top_n=5):
             by='Similarity', ascending=False).head(top_n)
         return recommendations[['Title', 'Similarity']]
 
-
-
+# this function accesses all the data that is stored in a google link 
+def load_and_save_csv(save_dir="data/processed-data"):
+    # this is the link to the csv file 
+    file_links = [
+        "https://drive.google.com/uc?id=1pNL2i9e2itaGtBIhMRnwbsqdhBVXax4c&export=download",
+    ]
+    os.makedirs(save_dir, exist_ok=True)  # Ensure directory exists
+    # opens empty frame to add dataframe 
+    data_frame = []
+    for idx, url in enumerate(file_links, start=1):
+        response = requests.get(url)
+        # Read directly into DataFrame
+        df = pd.read_csv(StringIO(response.text))
+        data_frame.append(df)
+        # Save to local file
+        file_path = os.path.join(save_dir, f"file_{idx}.csv")
+        df.to_csv(file_path, index=False)
+        print(f"File saved: {file_path}")
+    return data_frame
