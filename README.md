@@ -4,28 +4,36 @@
 
 ## Overview
 
-In this project, the Smart Movie Recommender is a Python package that is able to take in a query and return the top 5 recommended movies. 
+ The `Smart Movie Recommender` is a Python package that contains a data pipeline. This pipeline includes a webscraper of imdb.com and an api request form OmbdAPI, a query to a gemini to compute a score of movies based on genres and cosine similarity calculation between the user provided input. This hosted on a gradio application that a user can interact with once deployed.   
 
 ## Project Structure
 
-- **smartmovierecommender**: 
-- **datascrapper**
-- **gemini_query** 
-- **cosine_sim** 
-- **utils**: 
-- **tests**
+- **collector**: This folder contains two scripts `datacollect.py` and `datascraper.py`
+    - The `datacollect.py` file performs an api query to omdbapi
+    - The `datascraper.py` file scrapes imdb website using a custom web scraper 
+- **transformer**: This folder contains two scripts `gemini_query.py` 
+    - The `gemini_query.py` file chats with Gemini to score the movies 
+  
+- **calculation**: This folder contains two scripts `cosine_sim.py` 
+    - The `cosine_sim.py` file performs consine similarity between the inputted movie's vector and the movies in the dataset 
+- **utils**: This folder contains `combining_data.py` 
+    - The `combining_data.py` combines the movies in the dataset and implements fuzzy matching for information retrieval purpose. 
+- **tests**: This folder contain `test_smartmovierecommender.py` 
+   - The `test_smartmovierecommender.py` test the functionality of the `smartmovierecommender` package. 
 
-- **smartmovierecommender.py**: The code can be executed using this file by running: 
-  ```bash
+- **main.py**: Runs the `smartmovierecommender` package by computing the cosine similarity between an movie input and the available movies in the dataset. 
+
+- **app.py**: hosts a gradio app to allow user to interact with `smartmovierecommender` package.
 
 
-  ```
 ### Install Dependencies 
 
 ```bash
 cd smartmovierecommender
 pip install -r requirements.txt
+pip install -e smartmovierecommender 
 ```
+
 
 
 
