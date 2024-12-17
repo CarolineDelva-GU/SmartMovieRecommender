@@ -11,7 +11,11 @@ import requests
 from io import StringIO
 
 def movie_combiner(output_path, output_file):
-
+    """
+    Combines the movie information from the scraping and from Gemini
+    Args: the path to output the file, the file
+    Returns: None
+    """
     output_path = output_path
     all_files = [f for f in os.listdir(output_path) if f.endswith('.csv')]
     genre_df = pd.concat([pd.read_csv(os.path.join(output_path, file)) for file in all_files], ignore_index=True)
@@ -49,8 +53,12 @@ def movie_combiner(output_path, output_file):
     merged_df.to_csv(output_file, index=False)
     
 
-#this cleans the columns to normalize it to do the cosine similaritiy 
 def preprocess_movies(filepath):
+        """
+        Helper function to preprocess the movie files and normalize
+        Args: the path to the movie data file
+        Returns: the normalized movies for cosine similarity
+        """
         movies = pd.read_csv(filepath)
         # Converting duration to numeric
         movies['Duration'] = movies['Duration'].astype(str)
@@ -85,8 +93,12 @@ def preprocess_movies(filepath):
         return movies
 
 
-# this performs the cosine similarity and returns the top 5 recs 
 def get_movie_rec(movies,movie_title,top_n=5):
+        """
+        Performs the cosine similarity of the movies
+        Args: the list of movies, the title of the movie to compare to, default of 5 titles
+        Returns: the top 5 movie recommendations
+        """
         # lower titles to make it easier to search 
         movie_title = movie_title.lower().strip()
         movie_titles = [title.lower().strip() for title in movies['Title'].tolist()]
@@ -126,8 +138,12 @@ def get_movie_rec(movies,movie_title,top_n=5):
             by='Similarity', ascending=False).head(top_n)
         return recommendations[['Title', 'Similarity']]
 
-# this function accesses all the data that is stored in a google link 
 def load_and_save_csv(save_dir="../data/processed-data/"):
+    """
+    Accesses all the data that is stored in a google link 
+    Args: directory of data
+    Returns: data frame of the movies
+    """
     # this is the link to the csv file 
     file_links = [
         "https://drive.google.com/uc?id=1pNL2i9e2itaGtBIhMRnwbsqdhBVXax4c&export=download",
