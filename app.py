@@ -5,6 +5,11 @@ import io
 import sys
 
 def respond(prompt):
+    """
+    Generates the recommendation based on the title running through HuggingFace
+    Args: the prompt of movie title inputted by the user
+    Returns: a dictionary containing the movie titles and similarity of the 5 recommendations
+    """
     if not prompt:
         return {"error": "This is not a valid movie title."}
     app_stdout = sys.stdout
