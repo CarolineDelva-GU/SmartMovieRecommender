@@ -13,12 +13,12 @@ from selenium.common.exceptions import WebDriverException, NoSuchElementExceptio
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-if not os.path.exists('../../../data/'):
-    os.makedirs('../../../data')
+if not os.path.exists('../../../data/scraped_data'):
+    os.makedirs('../../../data/scraped_data')
 
 
 def save_to_json(data, chunk_num):
-    filename = f"../../../data/movies_chunk_{chunk_num}.json"
+    filename = f"../../../data/scraped_data/movies_chunk_{chunk_num}.json"
     
     with open(filename, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)

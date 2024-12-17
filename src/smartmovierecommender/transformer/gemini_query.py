@@ -149,7 +149,7 @@ if cleaned_movies:
     # Fill NaN values with 0
     df.fillna(0, inplace=True)
 
-    output_path = "output_data/cleaned_movies62.csv"
+    output_path = "../../../data/output_data/cleaned_movies62.csv"
     df.to_csv(output_path, index=False, encoding='utf-8')
     print(f"Data saved to {output_path}")
 else:
