@@ -9,6 +9,11 @@ from smartmovierecommender.calculation.cosine_sim import convert_duration, conve
    
 
 def main(movie_title):
+    """
+    Main function to load the data, process the movies, and perform cosine similarity
+    Args: the movie title inputted
+    Return: one
+    """
     # below loads the data from the google link
     additional_data = load_and_save_csv()
     #opens the function to get the dataset 
