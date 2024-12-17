@@ -18,6 +18,11 @@ if not os.path.exists('../../../data/scraped_data'):
 
 
 def save_to_json(data, chunk_num):
+    """
+    Saves the movie information to a JSON file
+    Args: the list of movie information to save, the index of the filename
+    Returns: outputs the movie to JSON into data folder following naming conventions
+    """
     filename = f"../../../data/scraped_data/movies_chunk_{chunk_num}.json"
     
     with open(filename, 'w', encoding='utf-8') as file:
@@ -26,6 +31,11 @@ def save_to_json(data, chunk_num):
     logging.info(f"Saving {len(data)} movies to {filename}")
 
 def extract_movie_data(raw_text):
+    """
+    Extracts the movie information for each film from the returned API information
+    Args: the raw text giving the movie information
+    Returns: the title, year, duration, MPAA rating, IMDb rating, number of rating, and description for each movie
+    """
     movies = []
     raw_movies = raw_text.split('\n\n')  
     
@@ -70,6 +80,10 @@ def extract_movie_data(raw_text):
     return movies
 
 def process_raw_data(raw_text):
+    """
+    Combines the processing of the movie text data and saving to JSON
+    Args: the text information of the movie
+    """
     chunk_num = 1
     data = []
     movies = extract_movie_data(raw_text)
@@ -84,6 +98,11 @@ def process_raw_data(raw_text):
 
 
 def scraper(url):
+    """
+    Scraper function to get the raw movie information using API
+    Args: the URL to scrape from
+    Returns: the raw text information about the movie
+    """
     options = Options()
     options.headless = False  
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
