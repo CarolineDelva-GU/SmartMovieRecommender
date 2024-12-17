@@ -6,7 +6,9 @@
 
 ## Overview
 
- The `Smart Movie Recommender` is a Python package that contains a data pipeline. This pipeline includes a webscraper of imdb.com and an api request form OmbdAPI, a query to a gemini to compute a score of movies based on genres and cosine similarity calculation between the user provided input. This hosted on a gradio application that a user can interact with once deployed.   
+ The `Smart Movie Recommender` is a Python package that contains a data pipeline. This pipeline includes a webscraper of imdb.com and an api request form OmbdAPI, a query to a gemini to compute a score of movies based on genres and cosine similarity calculation between the user provided input. This hosted on a gradio application that a user can interact with once deployed.
+
+ The `Smart Movie Recommender` will allow users to input movie titles and receive five movie recommendations based on cosine similarity scores.
 
 ## Project Structure
 
@@ -36,7 +38,18 @@ pip install -r requirements.txt
 pip install -e smartmovierecommender 
 ```
 
+## Example Usage
 
+In order to utilize the SmartMovieRecommender, the user follow these steps:
+
+- Download the files and package from GitHub
+- Activate the environment 'dsan5400'
+- Navigate to src/smartmovierecommender and ensure setup.py is within this file
+- pip install the smartmovierecommender package (either pip install -e smartmovierecommender or pip install . if in the correct location)
+- Navigate to the root of the project where app.py is located
+- Run the app file utilizing python app.py
+- Follow the local link provided in the terminal to an external browser
+- Enter movie titles into the box and receive recommendations.
 
 
 
