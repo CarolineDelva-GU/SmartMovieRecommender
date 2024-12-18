@@ -37,7 +37,6 @@ cd smartmovierecommender
 pip install -r requirements.txt
 pip install -e smartmovierecommender 
 ```
-
 ## Example Usage
 
 In order to utilize the SmartMovieRecommender, the user follow these steps:

@@ -4,11 +4,16 @@ import json
 import logging 
 print('here')
 print(os.getcwd())
-from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings
+# from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings
+from calculation.cosine_sim import convert_duration, convert_ratings
+
 from sklearn.metrics.pairwise import cosine_similarity
 from rapidfuzz import process, fuzz
 import requests
 from io import StringIO
+
+logger = logging.getLogger(__name__)
+
 
 def movie_combiner(output_path, output_file):
     """
