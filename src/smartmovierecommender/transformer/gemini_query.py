@@ -15,8 +15,12 @@ API_KEY_GEMINI = os.environ.get("gemapi")
 
 genai.configure(api_key=API_KEY_GEMINI)
 
-# Helper function to chat with Gemini API
 def chat_with_gemini(prompt, retries=3, delay=5):
+    """
+    Helper function to chat with Gemini API
+    Args: the prompt for Gemini, the number of retries allowed, the time delay between retries
+    Returns: None
+    """
     for attempt in range(retries):
         try:
             model = genai.GenerativeModel("gemini-1.5-flash-8b-latest")
@@ -35,8 +39,12 @@ def chat_with_gemini(prompt, retries=3, delay=5):
     print("Exceeded retry limit.")
     return None
 
-# Updated function to clean and parse the response
 def parse_response(response):
+    """
+    Updated function to clean and parse the response
+    Args: the response from Gemini
+    Returns: the cleaned response
+    """
     try:
         # Remove any common code block markers
         cleaned_response = re.sub(r"```json|```", "", response).strip()
@@ -56,8 +64,12 @@ def parse_response(response):
         return None
 
     
-# Main function to process job postings
 def process_movies():
+    """
+    Main function to collect the Gemini responses
+    Args: None
+    Returns: the list of movies with the Gemini genre ratings
+    """
     all_movies = []  # List to store cleaned job data
     
     for filename in os.listdir('Data'):

@@ -4,7 +4,10 @@ import argparse
 from sklearn.metrics.pairwise import cosine_similarity
 import os
 print(os.getcwd())
-from utils.combining_data import movie_combiner, get_movie_rec, preprocess_movies
+
+from smartmovierecommender.utils.combining_data import movie_combiner, get_movie_rec, preprocess_movies, load_and_save_csv
+from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings, cosine_sim, cosine_max, convert_to_title
+
 
 # #from smartmovierecommender.utils.combining_data import movie_combiner, get_movie_rec, preprocess_movies
 
@@ -22,13 +25,23 @@ logging.basicConfig(
 
 
 logging.info("Starting to score Main file")
-   
+
 
 def main(movie_title):
+    """
+    Main function to load the data, process the movies, and perform cosine similarity
+    Args: the movie title inputted
+    Return: one
+    """
+    # below loads the data from the google link
+    additional_data = load_and_save_csv()
     #opens the function to get the dataset 
-    print('inside main', os.getcwd())
-    #movies = preprocess_movies("../processed-data/output_file.csv")
-    movies = preprocess_movies("data/processed-data/output_file.csv")
+
+    print(os.getcwd())
+    #movies = preprocess_movies(additional_data[0])
+    #movies = preprocess_movies("../data/processed-data/file_1.csv")
+    movies = preprocess_movies("data/processed-data/file_1.csv")
+
     #does the cosine sim and gets the top 5 recs 
     recs = get_movie_rec(movies,movie_title)
     if recs.empty:
@@ -39,7 +52,6 @@ def main(movie_title):
         for i, row in recs.iterrows():
             print(f"{row['Title']} (Similarity: {row['Similarity']:.2f})")
             logging.info(f"{row['Title']} (Similarity: {row['Similarity']:.2f})")
-
 
 
  
