@@ -9,11 +9,6 @@ from smartmovierecommender.utils.combining_data import movie_combiner, get_movie
 from smartmovierecommender.calculation.cosine_sim import convert_duration, convert_ratings, cosine_sim, cosine_max, convert_to_title
 
 
-# #from smartmovierecommender.utils.combining_data import movie_combiner, get_movie_rec, preprocess_movies
-
-#from calculation.cosine_sim import convert_duration, convert_ratings, cosine_sim, cosine_max, convert_to_title
-
-print('here2', os.getcwd())
 
 logging.basicConfig(
     level=logging.INFO,
