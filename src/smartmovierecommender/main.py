@@ -19,6 +19,8 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
+
+
 logging.info("Starting to score Main file")
    
 
@@ -26,7 +28,7 @@ def main(movie_title):
     #opens the function to get the dataset 
     print('inside main', os.getcwd())
     #movies = preprocess_movies("../processed-data/output_file.csv")
-    movies = preprocess_movies("../data/processed-data/output_file.csv")
+    movies = preprocess_movies("data/processed-data/output_file.csv")
     #does the cosine sim and gets the top 5 recs 
     recs = get_movie_rec(movies,movie_title)
     if recs.empty:
